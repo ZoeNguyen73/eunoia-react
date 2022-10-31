@@ -4,6 +4,8 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 
 import { AuthProvider } from "./context/AuthProvider";
 
+import CharitiesIndexGrid from './components/charities/CharitiesIndexGrid';
+
 import './index.css';
 import App from './App';
 
@@ -14,7 +16,7 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}>
-
+            <Route path="charities" element={<CharitiesIndexGrid />} />
             <Route
               path="*"
               element={
