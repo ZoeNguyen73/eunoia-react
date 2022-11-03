@@ -1,5 +1,5 @@
 import { useRef, useState, useContext} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -24,8 +24,6 @@ export default function SignUpForm() {
   const [disabled, setDisabled] = useState(false);
   const [fileUrl, setFileUrl] = useState('');
   const [file, setFile] = useState('');
-
-  // const navigate = useNavigate();
 
   const formObj = {
     emailRef: useRef(),
@@ -62,11 +60,23 @@ export default function SignUpForm() {
     setLoading(true);
     setDisabled(true);
 
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+
     try {
-      await axios.post('users/', { email, password, username, contact_number, profile_image: file, });
+      await axios.post(
+        'users/', 
+        { email, password, username, contact_number, profile_image: file, },
+        config,
+      );
       setOpen(true);
       setMessage('Please check your email inbox for activation code');
       setSeverity('success');
+      setLoading(false);
+      setDisabled(false);
       return
 
     } catch(err) {

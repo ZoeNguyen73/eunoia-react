@@ -150,21 +150,41 @@ export default function LoginForm() {
             />
           </Box>
         </form>
-        <Box textAlign={"center"} mt={2} mb={2}>
+        <Box 
+          textAlign='center' 
+          display='flex'
+          flexDirection='row'
+          alignItems='center'
+          mt={2}
+        >
           <Typography
             variant='subtitle1'
             align='center'
             display='inline'
             paddingX={1}
-            gutterBottom
           >
             Don't have an account?
           </Typography>
           
           <Link className={styles['link']} to='/register'>
-            <Typography>Sign up</Typography>
+            <Typography fontWeight='bold'>Sign up</Typography>
           </Link>
-          
+        </Box>
+        <Box 
+          textAlign='center' 
+          display='flex'
+          flexDirection='row'
+          alignItems='center'
+          mb={2}
+        >
+          <Typography
+            variant='subtitle1'
+            align='center'
+            display='inline'
+            paddingX={1}
+          >
+            Or click <span><a href='/request-activation-email'>here</a></span> to resend your account activation email
+          </Typography>
         </Box>
       </Box>
       <Snackbar 
