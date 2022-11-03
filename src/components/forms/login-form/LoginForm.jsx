@@ -18,6 +18,10 @@ import styles from '../Form.module.scss';
 export default function LoginForm() {
   const [cookies, setCookie] = useCookies();
   const { auth, setAuth } = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('success');
+
   const navigate = useNavigate();
 
   const formObj = {
@@ -27,8 +31,16 @@ export default function LoginForm() {
 
   const loginSubmit = async (evnt) => {
     evnt.preventDefault();
+
     const email = formObj.emailRef.current.value;
     const password = formObj.passwordRef.current.value;
+
+    if (email === '' || password === '') {
+      setOpen(true);
+      setMessage('Please fill in all the required fields.');
+      setSeverity('error');
+      return
+    };
 
     try {
       const response = await axios.post('auth/token/', { email, password });
@@ -45,7 +57,10 @@ export default function LoginForm() {
       navigate('/');
 
     } catch(err) {
-      console.log(`err logging in: ${err}`);
+      setOpen(true);
+      setMessage(err?.response?.data?.detail);
+      setSeverity('error');
+      return
     }
   }
 
@@ -92,32 +107,25 @@ export default function LoginForm() {
           Log in
         </Typography>
         <Typography variant="subtitle1" className={styles['divider']} gutterBottom></Typography>
-        <form>
-          <Typography variant='subtitle1' gutterBottom>
-            Email
-          </Typography>
+        <form autoComplete='off'>
           <TextField
+            label='Email'
+            color='secondary'
             required
-            hiddenLabel
             fullWidth
-            variant='filled'
-            size='small'
+            variant='outlined'
             form='login-form'
             sx={{ marginBottom: 2 }}
             className={styles['input-text']}
             inputRef={formObj.emailRef}
           />
-          <Typography variant='subtitle1' gutterBottom>
-            Password
-          </Typography>
           <TextField
             required
-            hiddenLabel
+            label='Password'
             fullWidth
             id="password"
             type="password"
-            variant='filled'
-            size='small'
+            variant='outlined'
             form='login-form'
             sx={{ marginBottom: 2 }}
             className={styles['input-text']}
@@ -146,6 +154,19 @@ export default function LoginForm() {
           
         </Box>
       </Box>
+      <Snackbar 
+        open={open}
+        autoHideDuration={3000}
+        onClose={((evnt, reason) => {
+          if (reason === 'timeout') {
+            setOpen(false);
+          }
+        })}
+      >
+        <Alert variant='filled' severity={severity} sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
     </Box>
   )
 }

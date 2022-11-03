@@ -14,8 +14,8 @@ import App from './App';
 
 const theme = createTheme({
   palette: {
-    primary: { main: '#48416c' },
-    secondary: { main: '#edc18d' },
+    primary: { main: '#154726' },
+    secondary: { main: '#F1753F' },
   },
   typography: {
     fontFamily: 'Nunito Sans',
