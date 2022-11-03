@@ -13,7 +13,7 @@ export default function MenuBar(props) {
   const { profile, logout } = props.navigationLinks;
   const pages = [profile, logout];
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const auth = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
 
   const handleOpenUserMenu = (evnt) => {
     setAnchorElUser(evnt.currentTarget);
@@ -61,6 +61,15 @@ export default function MenuBar(props) {
             component={Link}
           >
             <Typography textAlign='center'>Register Organization</Typography>
+          </MenuItem>
+        )}
+        {(auth?.organization && auth?.organization !== 'null') && (
+          <MenuItem
+            onClick={handleCloseUserMenu}
+            to='organizations/dashboard'
+            component={Link}
+          >
+            <Typography textAlign='center'>Dashboard</Typography>
           </MenuItem>
         )}
       </Menu>

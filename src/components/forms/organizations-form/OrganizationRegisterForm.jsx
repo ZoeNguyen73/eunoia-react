@@ -1,5 +1,6 @@
 import { useRef, useState, useContext} from 'react';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -19,7 +20,7 @@ import CustomButton from '../../buttons/Button';
 import PreviewImage from '../../images/preview-image/PreviewImage';
 
 export default function OrganizationRegisterForm() {
-  const { auth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
@@ -28,6 +29,8 @@ export default function OrganizationRegisterForm() {
   const [fileUrl, setFileUrl] = useState('');
   const [file, setFile] = useState('');
   const [orgType, setOrgType] = useState('Charity');
+  const [cookies, setCookie] = useCookies();
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const axiosPrivate = useAxiosPrivate();
 
@@ -80,12 +83,17 @@ export default function OrganizationRegisterForm() {
     };
 
     try {
-      await axiosPrivate.post(
+      const response = await axiosPrivate.post(
         'organizations/', 
         { email, name, description, website, organization_type, logo_image: file, },
         config,
       );
+      setCookie('organization', response.data.name);
+      setCookie('organization_slug', response.data.slug);
+      setAuth(prev => { return { ...prev, organization: response.data.name, organizationSlug: response.data.slug }});
+
       setOpen(true);
+      setSubmitSuccess(true);
       setMessage('Thank you! We will reach out to you shortly to activate your organization account.');
       setSeverity('success');
       setLoading(false);
@@ -122,7 +130,7 @@ export default function OrganizationRegisterForm() {
     </Box>
   )}
 
-  if (auth?.organization !== 'null') { return (
+  if (auth?.organization && auth?.organization !== 'null' && !submitSuccess) { return (
     <Box>
       <Typography
         variant='h6'
