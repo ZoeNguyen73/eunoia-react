@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button";
+import { Link as RouterLink } from "react-router-dom";
 
 import styles from './Button.module.scss';
 
@@ -15,7 +16,6 @@ export default function CustomButton(props) {
     onMouseLeave,
     upload = false,
     onChange,
-    single = true,
   } = props;
 
   return (
@@ -23,6 +23,7 @@ export default function CustomButton(props) {
       className={styles[`${category}`]}
       sx={{ fontWeight: 'bold', textTransform: 'none' }}
       variant={variant}
+      component={upload ? 'label' : RouterLink}
       to={route}
       onClick={onClick}
       fullWidth={isFullWidth}
@@ -31,6 +32,14 @@ export default function CustomButton(props) {
       onMouseLeave={onMouseLeave}
     >
       {title}
+      {upload && (
+        <input
+          hidden
+          accept=".png, .jpeg, .jpg*"
+          type="file"
+          onChange={onChange}
+        />
+      )}
     </Button>
   )
 }
