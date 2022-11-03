@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/
 import { AuthProvider } from "./context/AuthProvider";
 
 import CharitiesIndexGrid from './components/charities/CharitiesIndexGrid';
+import LoginForm from './components/forms/login-form/LoginForm';
 
 import './index.css';
 import App from './App';
@@ -32,13 +33,14 @@ root.render(
         <StyledEngineProvider injectFirst>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<App />}>
-                <Route path="charities" element={<CharitiesIndexGrid />} />
+              <Route path='/' element={<App />}>
+                <Route path='login' element={<LoginForm />} />
+                <Route path='charities' element={<CharitiesIndexGrid />} />
                 <Route
-                  path="*"
+                  path='*'
                   element={
-                    <main style={{ padding: "1rem" }}>
-                      <p style={{ color: "white" }}>There's nothing here!</p>
+                    <main style={{ padding: '1rem' }}>
+                      <p style={{ color: 'white' }}>There's nothing here!</p>
                     </main>
                   }
                 />
