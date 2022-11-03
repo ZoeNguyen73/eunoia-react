@@ -21,7 +21,7 @@ export default function CharitiesIndexGrid() {
 
   const charitiesList = charities.map((c, idx) => {
     return (
-      <div key={idx}> c.name</div>
+      <div key={idx}>{c.name}</div>
     )
   })
 
