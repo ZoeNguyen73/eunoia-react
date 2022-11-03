@@ -18,28 +18,29 @@ import AuthContext from '../../context/AuthProvider';
 import axios from '../../api/axios';
 import SearchBar from './SearchBar'
 import DrawerComponent from './DrawerComponent';
-import './SiteHeader.scss'
+import MenuBar from './MenuBar';
+import styles from './SiteHeader.module.scss'
 
 export default function SiteHeader() {
   const { auth } = useContext(AuthContext);
   const isAuth = !!auth?.username
-  const [profile, setProfile] = useState(null)
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
     async function getProfileData() {
       if (auth?.username) {
         try {
-          const response = await axios.get(`/users/${auth?.username}`)
-          setProfile(response.data)
+          const response = await axios.get(`/users/${auth?.username}`);
+          setProfile(response.data);
         } catch (err) {
-          console.log(`err getting profile data: ${err}`)
+          console.log(`err getting profile data: ${err}`);
         }
       }
     }
 
     getProfileData()
     
-  }, [])
+  }, [auth])
 
   const navigationLinks = {
     listings: { pageName: 'Listings', pageLink: '/listings'},
@@ -48,6 +49,7 @@ export default function SiteHeader() {
     about: { pageName: 'About', pageLink: '/about' },
     login: { pageName: 'Login', pageLink: '/login' },
     register: { pageName: 'Register', pageLink: '/register' },
+    profile: { pageName: 'Profile', pageLink: `/users/${auth?.username}` },
     logout: { pageName: 'Logout', pageLink: '/logout' },
     createNewOrganization: { pageName: 'Create New Organization', pageLink: '/organizations/create' },
   }
@@ -62,8 +64,8 @@ export default function SiteHeader() {
   const isBreakPoint = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <AppBar position='relative' className='site-header'>
-      <Toolbar sx={{ backgroundColor: 'var(--color3a)' }}>
+    <AppBar position='relative' className={styles['site-header']}>
+      <Toolbar>
         {isBreakPoint ? (
           <Grid container sx={{ placeItems: 'center' }}>
             <Link to='/'>
@@ -83,49 +85,68 @@ export default function SiteHeader() {
             </Box>
           </Grid>
         ) : (
-          <Grid container sx={{ placeItems: 'center' }}>
-            <Link to='/'>
-              <Typography variant='h5' sx={{color: 'var(--color2)', fontWeight: '900',}}>
-                Eunoia
-              </Typography>
-            </Link>
-            <Box
-              sx={{
-                marginLeft: 'auto',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <SearchBar />
-              <List sx={{display: 'flex', marginLeft: 'auto'}}>
-                {navigationTabs.map((nav, index) => (
-                  <ListItemButton 
-                    key={index} 
-                    to={`${nav.pageLink}`}
-                    component={Link}
-                    sx={{ 
-                      borderBottom: '0', 
-                      backgroundColor: nav.pageName === 'Login' ? 'var(--color2)' : '',
-                      borderRadius: nav.pageName === 'Login' ? '0.5em' : '',
-                      '&:hover': { backgroundColor: nav.pageName === 'Login' ? 'var(--color2)' : 'var(--color3a)', }
-                    }}
-                    divider
-                  >
-                    <ListItemIcon>
-                      <ListItemText
-                        sx={{
-                          color: nav.pageName === 'Login' ? 'var(--color1)' : 'var(--color2)',
-                          '&:hover': { textDecoration: 'underline'}
-                        }}
-                      >
-                        <Typography>{nav.pageName}</Typography>
-                      </ListItemText>
-                    </ListItemIcon>
-                  </ListItemButton>
-                ))}
-              </List>
-            </Box>
-          </Grid>
+          <>
+            <Grid container sx={{ placeItems: 'center' }}>
+              <Link to='/'>
+                <Typography variant='h5' sx={{color: 'var(--color2)', fontWeight: '900',}}>
+                  Eunoia
+                </Typography>
+              </Link>
+              <Box
+                sx={{
+                  marginLeft: 'auto',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <SearchBar />
+                <List sx={{display: 'flex', marginLeft: 'auto'}}>
+                  {navigationTabs.map((nav, index) => (
+                    <ListItemButton 
+                      key={index} 
+                      to={`${nav.pageLink}`}
+                      component={Link}
+                      sx={{ 
+                        borderBottom: '0', 
+                        backgroundColor: nav.pageName === 'Login' ? 'var(--color2)' : '',
+                        borderRadius: nav.pageName === 'Login' ? '0.5em' : '',
+                        '&:hover': { backgroundColor: nav.pageName === 'Login' ? 'var(--color2)' : 'var(--color3a)', }
+                      }}
+                      divider
+                    >
+                      <ListItemIcon>
+                        <ListItemText
+                          sx={{
+                            color: nav.pageName === 'Login' ? 'var(--color1)' : 'var(--color2)',
+                          }}
+                        >
+                          <Typography className={styles['nav-name']}>{nav.pageName}</Typography>
+                        </ListItemText>
+                      </ListItemIcon>
+                    </ListItemButton>
+                  ))}
+                </List>
+              </Box>
+            </Grid>
+
+            {isAuth && (
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  marginLeft: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 3,
+                }}
+              >
+                <MenuBar
+                  navigationLinks={navigationLinks}
+                  profileAvatarUrl={profile?.profile_image}
+                />
+              </Box>
+            )}
+          </>
+          
         )}
       </Toolbar>
     </AppBar>
