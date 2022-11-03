@@ -50,7 +50,7 @@ export default function SiteHeader() {
     login: { pageName: 'Login', pageLink: '/login' },
     register: { pageName: 'Register', pageLink: '/register' },
     profile: { pageName: 'Profile', pageLink: `/users/${auth?.username}` },
-    logout: { pageName: 'Logout', pageLink: '/logout' },
+    logout: { pageName: 'Log Out', pageLink: '/logout' },
     createNewOrganization: { pageName: 'Create New Organization', pageLink: '/organizations/create' },
   }
 
