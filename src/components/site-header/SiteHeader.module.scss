@@ -1,0 +1,17 @@
+.site-header {
+  margin-bottom: 4rem;
+  box-shadow: none;
+  background-color: var(--color3a);
+
+  .nav-name {
+    text-align: center;
+    &:hover {
+      font-weight: 700,
+    }
+  }
+
+  a {
+    text-decoration: none
+  }
+}
+
