@@ -1,0 +1,20 @@
+.MuiPaper-root.MuiAppBar-root {
+  box-shadow: none;
+}
+
+.MuiListItemIcon-root {
+  .MuiTypography-root {
+    text-align: center;
+    &:hover {
+      font-weight: 700,
+    }
+  }
+}
+
+.site-header {
+  margin-bottom: 4rem;
+}
+
+a {
+  text-decoration: none
+}
