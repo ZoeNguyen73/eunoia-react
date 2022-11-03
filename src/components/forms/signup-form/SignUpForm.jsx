@@ -1,7 +1,5 @@
 import { useRef, useState, useContext} from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
-import jwt_decode from 'jwt-decode';
+import { Link } from 'react-router-dom';
 
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -14,30 +12,45 @@ import AuthContext from '../../../context/AuthProvider';
 import axios from '../../../api/axios';
 import styles from '../Form.module.scss';
 import CustomLoadingButton from '../../buttons/LoadingButton';
+import CustomButton from '../../buttons/Button';
+import PreviewImage from '../../images/preview-image/PreviewImage';
 
-export default function LoginForm() {
-  const [cookies, setCookie] = useCookies();
-  const { auth, setAuth } = useContext(AuthContext);
+export default function SignUpForm() {
+  const { auth } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
-
-  const navigate = useNavigate();
+  const [fileUrl, setFileUrl] = useState('');
+  const [file, setFile] = useState('');
 
   const formObj = {
     emailRef: useRef(),
+    usernameRef: useRef(),
     passwordRef: useRef(),
+    contactNumberRef: useRef(),
   }
 
-  const loginSubmit = async (evnt) => {
+  const handleFileInput = (evnt) => {
+    setFile(evnt.target.files[0]);
+    setFileUrl(URL.createObjectURL(evnt.target.files[0]));
+  };
+
+  const handleFileRemove = (evnt) => {
+    setFile('');
+    setFileUrl('');
+  };
+
+  const signUpSubmit = async (evnt) => {
     evnt.preventDefault();
 
     const email = formObj.emailRef.current.value;
     const password = formObj.passwordRef.current.value;
+    const username = formObj.usernameRef.current.value;
+    const contact_number = formObj.contactNumberRef.current.value;
 
-    if (email === '' || password === '') {
+    if (email === '' || password === '' || username === '' || contact_number === '') {
       setOpen(true);
       setMessage('Please fill in all the required fields.');
       setSeverity('error');
@@ -47,19 +60,24 @@ export default function LoginForm() {
     setLoading(true);
     setDisabled(true);
 
-    try {
-      const response = await axios.post('auth/token/', { email, password });
-      const { refresh, access } = response.data;
-      setCookie('refreshToken', refresh);
-      setCookie('accessToken', access);
-      const decoded = jwt_decode(access);
-      const username = decoded.username;
-      const organization = decoded.organization;
-      setCookie('username', username);
-      setCookie('organization', organization);
-      setAuth({ accessToken: access, username, organization });
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
 
-      navigate('/');
+    try {
+      await axios.post(
+        'users/', 
+        { email, password, username, contact_number, profile_image: file, },
+        config,
+      );
+      setOpen(true);
+      setMessage('Please check your email inbox for activation code');
+      setSeverity('success');
+      setLoading(false);
+      setDisabled(false);
+      return
 
     } catch(err) {
       setOpen(true);
@@ -111,7 +129,7 @@ export default function LoginForm() {
           className={styles['title']}
           gutterBottom
         >
-          Log in
+          Sign up
         </Typography>
         <Typography variant="subtitle1" className={styles['divider']} gutterBottom></Typography>
         <form autoComplete='off'>
@@ -121,13 +139,25 @@ export default function LoginForm() {
             required
             fullWidth
             variant='outlined'
-            form='login-form'
+            form='signup-form'
             sx={{ marginBottom: 2 }}
             className={styles['input-text']}
             inputRef={formObj.emailRef}
           />
           <TextField
+            label='Username'
+            color='secondary'
             required
+            fullWidth
+            variant='outlined'
+            form='signup-form'
+            sx={{ marginBottom: 2 }}
+            className={styles['input-text']}
+            inputRef={formObj.usernameRef}
+          />
+          <TextField
+            required
+            color='secondary'
             label='Password'
             fullWidth
             id="password"
@@ -138,53 +168,75 @@ export default function LoginForm() {
             className={styles['input-text']}
             inputRef={formObj.passwordRef}
           />
-          <Box textAlign={"center"}>
+          <TextField
+            label='Contact number'
+            color='secondary'
+            required
+            fullWidth
+            variant='outlined'
+            form='signup-form'
+            sx={{ marginBottom: 2 }}
+            className={styles['input-text']}
+            inputRef={formObj.contactNumberRef}
+          />
+          <Box display='flex' flexDirection='row' alignItems='center' gap='2em'>
+            <Box display='flex' flexDirection='column'>
+              <CustomButton 
+                variant='outlined'
+                title='Upload profile pic'
+                category='action'
+                upload={true}
+                onChange={handleFileInput}
+              />
+              {fileUrl && (
+                <Typography 
+                  variant='subtitle1' 
+                  onClick={handleFileRemove}
+                  sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' } }}
+                >
+                  Remove file
+                </Typography>
+              )}
+            </Box>
+            
+            { fileUrl && (
+              <PreviewImage 
+                imgUrl={fileUrl}
+                sx={{
+                  width: 128,
+                  height: 128,
+                  marginBottom: 2,
+                }}
+              />
+            )}
+          </Box>
+          <Box textAlign={'center'} marginTop='1em'>
             <CustomLoadingButton 
-              title='Log in'
+              title='Sign Up'
               category='action'
               variant='contained'
               isFullWidth={true}
-              onClick={loginSubmit}
+              onClick={signUpSubmit}
               disabled={disabled}
               loading={loading}
             />
           </Box>
         </form>
-        <Box 
-          textAlign='center' 
-          display='flex'
-          flexDirection='row'
-          alignItems='center'
-          mt={2}
-        >
+        <Box textAlign={"center"} mt={2} mb={2}>
           <Typography
             variant='subtitle1'
             align='center'
             display='inline'
             paddingX={1}
+            gutterBottom
           >
-            Don't have an account?
+            Already have an account?
           </Typography>
           
-          <Link className={styles['link']} to='/register'>
-            <Typography fontWeight='bold'>Sign up</Typography>
+          <Link className={styles['link']} to='/login'>
+            <Typography>Log in</Typography>
           </Link>
-        </Box>
-        <Box 
-          textAlign='center' 
-          display='flex'
-          flexDirection='row'
-          alignItems='center'
-          mb={2}
-        >
-          <Typography
-            variant='subtitle1'
-            align='center'
-            display='inline'
-            paddingX={1}
-          >
-            Or click <span><a href='/request-activation-email'>here</a></span> to resend your account activation email
-          </Typography>
+          
         </Box>
       </Box>
       <Snackbar 

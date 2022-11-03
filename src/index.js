@@ -8,6 +8,9 @@ import { AuthProvider } from "./context/AuthProvider";
 import CharitiesIndexGrid from './components/charities/CharitiesIndexGrid';
 import LoginForm from './components/forms/login-form/LoginForm';
 import LogOut from './components/logout/LogOut';
+import SignUpForm from './components/forms/signup-form/SignUpForm';
+import Activation from './components/activation/Activation';
+import RequestActivationEmail from './components/activation/RequestActivationEmail';
 
 import './index.css';
 import App from './App';
@@ -35,9 +38,18 @@ root.render(
           <BrowserRouter>
             <Routes>
               <Route path='/' element={<App />}>
+                <Route path='register' element={<SignUpForm />} />
                 <Route path='login' element={<LoginForm />} />
                 <Route path='logout' element={<LogOut />} />
                 <Route path='charities' element={<CharitiesIndexGrid />} />
+                <Route
+                  path='users/activate/:activationToken'
+                  element={<Activation />}
+                />
+                <Route
+                  path='request-activation-email'
+                  element={<RequestActivationEmail />}
+                />
                 <Route
                   path='*'
                   element={
