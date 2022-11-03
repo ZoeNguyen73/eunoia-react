@@ -6,7 +6,6 @@ import jwt_decode from 'jwt-decode';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
@@ -14,6 +13,7 @@ import Button from '@mui/material/Button';
 import AuthContext from '../../../context/AuthProvider';
 import axios from '../../../api/axios';
 import styles from '../Form.module.scss';
+import CustomButton from '../../buttons/Button';
 
 export default function LoginForm() {
   const [cookies, setCookie] = useCookies();
@@ -132,9 +132,13 @@ export default function LoginForm() {
             inputRef={formObj.passwordRef}
           />
           <Box textAlign={"center"}>
-            <Button variant='contained' onClick={loginSubmit}>
-              Log in
-            </Button>
+            <CustomButton 
+              title='Log in'
+              category='action'
+              variant='contained'
+              isFullWidth={true}
+              onClick={loginSubmit}
+            />
           </Box>
         </form>
         <Box textAlign={"center"} mt={2} mb={2}>
