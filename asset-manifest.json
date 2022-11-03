@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/eunoia-react/static/css/main.f7cb68ec.css",
+    "main.js": "/eunoia-react/static/js/main.480bfd59.js",
+    "index.html": "/eunoia-react/index.html",
+    "main.f7cb68ec.css.map": "/eunoia-react/static/css/main.f7cb68ec.css.map",
+    "main.480bfd59.js.map": "/eunoia-react/static/js/main.480bfd59.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f7cb68ec.css",
+    "static/js/main.480bfd59.js"
+  ]
+}
