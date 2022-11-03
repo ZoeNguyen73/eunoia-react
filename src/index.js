@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/AuthProvider";
 
 import CharitiesIndexGrid from './components/charities/CharitiesIndexGrid';
 import LoginForm from './components/forms/login-form/LoginForm';
+import LogOut from './components/logout/LogOut';
 
 import './index.css';
 import App from './App';
@@ -35,6 +36,7 @@ root.render(
             <Routes>
               <Route path='/' element={<App />}>
                 <Route path='login' element={<LoginForm />} />
+                <Route path='logout' element={<LogOut />} />
                 <Route path='charities' element={<CharitiesIndexGrid />} />
                 <Route
                   path='*'
