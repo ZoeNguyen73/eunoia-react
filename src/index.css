@@ -9,6 +9,7 @@
   --color4a: #F1753F;
   --color5: #FBEEC1;
   --color6: #F2EFEF;
+  --color7: #7D3E61;
   --disable-color: #858C97;
 }
 
@@ -19,7 +20,7 @@
 }
 
 body {
-  background-color: var(--color6);
+  background-color: var(--color1);
 }
 
 html {

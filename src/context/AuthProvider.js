@@ -8,6 +8,7 @@ export const AuthProvider= ({ children }) => {
 
   const [auth, setAuth] = useState({
     username: cookies.username || '',
+    organization: cookies.organization || '',
     accessToken: cookies.accessToken || '',
   });
 

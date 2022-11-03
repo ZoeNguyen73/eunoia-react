@@ -63,7 +63,7 @@ export default function SiteHeader() {
 
   return (
     <AppBar position='relative' className='site-header'>
-      <Toolbar sx={{ backgroundColor: 'var(--color1)' }}>
+      <Toolbar sx={{ backgroundColor: 'var(--color3a)' }}>
         {isBreakPoint ? (
           <Grid container sx={{ placeItems: 'center' }}>
             <Link to='/'>
@@ -107,7 +107,7 @@ export default function SiteHeader() {
                       borderBottom: '0', 
                       backgroundColor: nav.pageName === 'Login' ? 'var(--color2)' : '',
                       borderRadius: nav.pageName === 'Login' ? '0.5em' : '',
-                      '&:hover': { backgroundColor: nav.pageName === 'Login' ? 'var(--color2)' : 'var(--color1)', }
+                      '&:hover': { backgroundColor: nav.pageName === 'Login' ? 'var(--color2)' : 'var(--color3a)', }
                     }}
                     divider
                   >
