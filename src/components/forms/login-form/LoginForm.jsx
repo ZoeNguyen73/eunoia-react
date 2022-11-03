@@ -14,6 +14,7 @@ import AuthContext from '../../../context/AuthProvider';
 import axios from '../../../api/axios';
 import styles from '../Form.module.scss';
 import CustomButton from '../../buttons/Button';
+import CustomLoadingButton from '../../buttons/LoadingButton';
 
 export default function LoginForm() {
   const [cookies, setCookie] = useCookies();
@@ -21,6 +22,8 @@ export default function LoginForm() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const navigate = useNavigate();
 
@@ -42,6 +45,9 @@ export default function LoginForm() {
       return
     };
 
+    setLoading(true);
+    setDisabled(true);
+
     try {
       const response = await axios.post('auth/token/', { email, password });
       const { refresh, access } = response.data;
@@ -60,6 +66,8 @@ export default function LoginForm() {
       setOpen(true);
       setMessage(err?.response?.data?.detail);
       setSeverity('error');
+      setLoading(false);
+      setDisabled(false);
       return
     }
   }
@@ -132,12 +140,14 @@ export default function LoginForm() {
             inputRef={formObj.passwordRef}
           />
           <Box textAlign={"center"}>
-            <CustomButton 
+            <CustomLoadingButton 
               title='Log in'
               category='action'
               variant='contained'
               isFullWidth={true}
               onClick={loginSubmit}
+              disabled={disabled}
+              loading={loading}
             />
           </Box>
         </form>
