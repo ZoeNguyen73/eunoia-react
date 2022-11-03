@@ -11,6 +11,7 @@ import LogOut from './components/logout/LogOut';
 import SignUpForm from './components/forms/signup-form/SignUpForm';
 import Activation from './components/activation/Activation';
 import RequestActivationEmail from './components/activation/RequestActivationEmail';
+import OrganizationRegisterForm from './components/forms/organizations-form/OrganizationRegisterForm';
 
 import './index.css';
 import App from './App';
@@ -50,6 +51,7 @@ root.render(
                   path='request-activation-email'
                   element={<RequestActivationEmail />}
                 />
+                <Route path='organizations/register' element={<OrganizationRegisterForm />} />
                 <Route
                   path='*'
                   element={
