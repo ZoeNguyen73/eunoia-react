@@ -51,7 +51,6 @@ export default function SiteHeader() {
     register: { pageName: 'Register', pageLink: '/register' },
     profile: { pageName: 'Profile', pageLink: `/users/${auth?.username}` },
     logout: { pageName: 'Log Out', pageLink: '/logout' },
-    createNewOrganization: { pageName: 'Create New Organization', pageLink: '/organizations/create' },
   }
 
   const { listings, charities, donors, about, login, register } = navigationLinks

@@ -8,7 +8,7 @@ export default function useRefreshToken() {
   const refresh = async () => {
     const response = await axios.post(
       'auth/token/refresh/',
-      { refreshToken: cookies.refreshToken}
+      { refresh: cookies.refreshToken}
     );
 
     const newAccessToken = response.data.access;

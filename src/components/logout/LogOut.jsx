@@ -14,7 +14,8 @@ export default function LogOut() {
     removeCookie('accessToken');
     removeCookie('username');
     removeCookie('organization');
-    setAuth({ accessToken: '', username: '', organization:'' });
+    removeCookie('organization_slug');
+    setAuth({ accessToken: '', username: '', organization:'', organizationSlug:'' });
     navigate('/', { replace: true })
   }, [])
 
