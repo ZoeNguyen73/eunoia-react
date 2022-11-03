@@ -161,7 +161,7 @@ export default function OrganizationRegisterForm() {
           className={styles['title']}
           gutterBottom
         >
-          Sign up
+          Register your organization
         </Typography>
         <Typography variant="subtitle1" className={styles['divider']} gutterBottom></Typography>
         <form autoComplete='off'>
