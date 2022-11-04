@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -23,7 +22,6 @@ import CustomButton from '../../buttons/Button';
 export default function AddressesTab(props) {
   const organization = props.organizationData;
   const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
   const [button, setButton] = useState('Add');
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
@@ -220,7 +218,7 @@ export default function AddressesTab(props) {
       const response = await axios.get(`organizations/${organization.slug}/addresses`);
       setAddresses(response.data);
       return
-      
+
     } catch(err) {
       setOpen(true);
       setMessage(err?.response?.data?.detail);
