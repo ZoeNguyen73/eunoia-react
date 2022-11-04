@@ -9,6 +9,8 @@ import AuthContext from '../../context/AuthProvider';
 
 export default function ListingGrid(props) {
   const [listings, setListings] = useState([]);
+  const [orgType, setOrgType] = useState(false);
+  const [cartListings, setCartListings] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useContext(AuthContext);
   const { filters, limit } = props;
@@ -42,10 +44,13 @@ export default function ListingGrid(props) {
 
   useEffect(() => {
     async function getData() {
-      console.log(`apiurl: ${apiUrl}`)
       try {
         const response = await axios.get(apiUrl);
+        const orgResponse = await axios.get(`organizations/${auth.organizationSlug}/`);
+        const cartListingsResp = await axiosPrivate.get(`carts/listings/`);
         setListings(response.data);
+        setOrgType(orgResponse.data.organization_type);
+        setCartListings(cartListingsResp.data.map(i => i.listing.id));
         return
       } catch(err) {
         console.log(err);
@@ -56,11 +61,25 @@ export default function ListingGrid(props) {
     getData();
   }, [apiUrl, props])
 
+  const handleAddToCart = (listingId) => {
+    setCartListings(prev => { return [...prev, listingId]});
+    return
+  }
+
+  const handleRemoveFromCart = (listingId) => {
+    setCartListings(prev => { return prev.filter(a => a !== listingId)});
+    return
+  }
+
   const listingCards = listings.map((listing, idx) => {
     return (
       <Grid key={idx} xs={true} md={4} item>
         <ListingCard 
           listing={listing}
+          cartListings={cartListings}
+          orgType={orgType}
+          handleAddToCart={handleAddToCart}
+          handleRemoveFromCart={handleRemoveFromCart}
         />
       </Grid>
     )
