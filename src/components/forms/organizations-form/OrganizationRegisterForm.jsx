@@ -1,22 +1,25 @@
 import { useRef, useState, useContext} from 'react';
-import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 
 import AuthContext from '../../../context/AuthProvider';
-import axios from '../../../api/axios';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import styles from '../Form.module.scss';
 import CustomLoadingButton from '../../buttons/LoadingButton';
 import CustomButton from '../../buttons/Button';
-import CustomAvatar from '../../images/Avatar';
+import PreviewImage from '../../images/PreviewImage';
 
-export default function SignUpForm() {
-  const { auth } = useContext(AuthContext);
+export default function OrganizationRegisterForm() {
+  const { auth, setAuth } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
@@ -24,12 +27,18 @@ export default function SignUpForm() {
   const [disabled, setDisabled] = useState(false);
   const [fileUrl, setFileUrl] = useState('');
   const [file, setFile] = useState('');
+  const [orgType, setOrgType] = useState('Charity');
+  const [cookies, setCookie] = useCookies();
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const axiosPrivate = useAxiosPrivate();
 
   const formObj = {
+    nameRef: useRef(),
+    descriptionRef: useRef(),
+    websiteRef: useRef(),
     emailRef: useRef(),
-    usernameRef: useRef(),
-    passwordRef: useRef(),
-    contactNumberRef: useRef(),
+    organizationTypeRef: useRef(),
   }
 
   const handleFileInput = (evnt) => {
@@ -42,15 +51,21 @@ export default function SignUpForm() {
     setFileUrl('');
   };
 
-  const signUpSubmit = async (evnt) => {
+  const handleTypeChange = (evnt) => {
+    setOrgType(evnt.target.value);
+  }
+
+  const registrationSubmit = async (evnt) => {
     evnt.preventDefault();
-
+    const name = formObj.nameRef.current.value;
+    const description = formObj.descriptionRef.current.value;
+    const website = formObj.websiteRef.current.value;
     const email = formObj.emailRef.current.value;
-    const password = formObj.passwordRef.current.value;
-    const username = formObj.usernameRef.current.value;
-    const contact_number = formObj.contactNumberRef.current.value;
+    const organization_type = orgType;
 
-    if (email === '' || password === '' || username === '' || contact_number === '') {
+    if (
+      email === '' || name === '' || description === '' || website === '' || organization_type === ''
+    ) {
       setOpen(true);
       setMessage('Please fill in all the required fields.');
       setSeverity('error');
@@ -67,21 +82,27 @@ export default function SignUpForm() {
     };
 
     try {
-      await axios.post(
-        'users/', 
-        { email, password, username, contact_number, profile_image: file, },
+      const response = await axiosPrivate.post(
+        'organizations/', 
+        { email, name, description, website, organization_type, logo_image: file, },
         config,
       );
+      setCookie('organization', response.data.name);
+      setCookie('organization_slug', response.data.slug);
+      setAuth(prev => { return { ...prev, organization: response.data.name, organizationSlug: response.data.slug }});
+
       setOpen(true);
-      setMessage('Please check your email inbox for activation code');
+      setSubmitSuccess(true);
+      setMessage('Thank you! We will reach out to you shortly to activate your organization account.');
       setSeverity('success');
       setLoading(false);
       setDisabled(false);
       return
 
     } catch(err) {
+      const key = Object.keys(err.response.data)[0];
       setOpen(true);
-      setMessage(err?.response?.data?.detail);
+      setMessage(err?.response?.data[key][0]);
       setSeverity('error');
       setLoading(false);
       setDisabled(false);
@@ -89,23 +110,41 @@ export default function SignUpForm() {
     }
   }
 
-  if (auth?.username) { return (
+  if (!auth?.username) { return (
     <Box>
       <Typography
-        variant='h4'
+        variant='h6'
         component="h1"
         textAlign={'center'}
         gutterBottom
       >
-        You have logged in as&nbsp;
-        <span className='highlight-text'>
-          {auth.username}
-        </span>
+        Only active user can register a new organization. Please kindly log in to proceed.
       </Typography>
-      <Box textAlign={"center"}>
-        <Button variant='contained' href='/'>Go back to homepage</Button>
-        <Button>Go to dashboard</Button>
-      </Box>
+      <CustomButton 
+        title='Login'
+        category='action'
+        route='/login'
+        variant='contained'
+      />
+    </Box>
+  )}
+
+  if (auth?.organization && auth?.organization !== 'null' && !submitSuccess) { return (
+    <Box>
+      <Typography
+        variant='h6'
+        component="h1"
+        textAlign={'center'}
+        gutterBottom
+      >
+        You are already an admin of {auth.organization}. Existing admins of an organization cannot register a new organization account.
+      </Typography>
+      <CustomButton 
+        title='Back to Homepage'
+        category='action'
+        route='/'
+        variant='contained'
+      />
     </Box>
   )}
 
@@ -129,61 +168,81 @@ export default function SignUpForm() {
           className={styles['title']}
           gutterBottom
         >
-          Sign up
+          Register your organization
         </Typography>
         <Typography variant="subtitle1" className={styles['divider']} gutterBottom></Typography>
         <form autoComplete='off'>
+          <TextField
+            label='Organization Name'
+            color='secondary'
+            required
+            fullWidth
+            variant='outlined'
+            form='org-register-form'
+            sx={{ marginBottom: 2 }}
+            className={styles['input-text']}
+            inputRef={formObj.nameRef}
+          />
+          <TextField
+            label='Description (max 200 characters)'
+            color='secondary'
+            multiline
+            maxRows={4}
+            required
+            fullWidth
+            variant='outlined'
+            form='org-register-form'
+            sx={{ marginBottom: 2 }}
+            className={styles['input-text']}
+            inputRef={formObj.descriptionRef}
+          />
+          <TextField
+            label='Website'
+            color='secondary'
+            required
+            fullWidth
+            variant='outlined'
+            form='org-register-form'
+            sx={{ marginBottom: 2 }}
+            className={styles['input-text']}
+            inputRef={formObj.websiteRef}
+          />
           <TextField
             label='Email'
             color='secondary'
             required
             fullWidth
             variant='outlined'
-            form='signup-form'
+            form='org-register-form'
             sx={{ marginBottom: 2 }}
             className={styles['input-text']}
             inputRef={formObj.emailRef}
           />
-          <TextField
-            label='Username'
-            color='secondary'
-            required
-            fullWidth
-            variant='outlined'
-            form='signup-form'
-            sx={{ marginBottom: 2 }}
-            className={styles['input-text']}
-            inputRef={formObj.usernameRef}
-          />
-          <TextField
-            required
-            color='secondary'
-            label='Password'
-            fullWidth
-            id="password"
-            type="password"
-            variant='outlined'
-            form='login-form'
-            sx={{ marginBottom: 2 }}
-            className={styles['input-text']}
-            inputRef={formObj.passwordRef}
-          />
-          <TextField
-            label='Contact number'
-            color='secondary'
-            required
-            fullWidth
-            variant='outlined'
-            form='signup-form'
-            sx={{ marginBottom: 2 }}
-            className={styles['input-text']}
-            inputRef={formObj.contactNumberRef}
-          />
+
+          <Box display='flex' flexDirection='row' alignItems='center' gap='2em'>
+            <FormLabel 
+              id='organization-type-buttons-group'
+              sx={{ textAlign: 'left'}}
+            >
+              Organization Type
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby='organization-type-buttons-group'
+              name="organization-type-buttons-group"
+              value={orgType}
+              onChange={handleTypeChange}
+            >
+              <FormControlLabel value='Charity' control={<Radio />} label='Charity' />
+              <FormControlLabel value='Donor' control={<Radio />} label='Donor' />
+            </RadioGroup>
+          </Box>
+
           <Box display='flex' flexDirection='row' alignItems='center' gap='2em'>
             <Box display='flex' flexDirection='column'>
               <CustomButton 
                 variant='outlined'
-                title='Upload profile pic'
+                title='Upload organization logo'
                 category='action'
                 upload={true}
                 onChange={handleFileInput}
@@ -200,8 +259,9 @@ export default function SignUpForm() {
             </Box>
             
             { fileUrl && (
-              <CustomAvatar
+              <PreviewImage 
                 imgUrl={fileUrl}
+                imgAlt='organization-logo'
                 sx={{
                   width: 128,
                   height: 128,
@@ -212,32 +272,16 @@ export default function SignUpForm() {
           </Box>
           <Box textAlign={'center'} marginTop='1em'>
             <CustomLoadingButton 
-              title='Sign Up'
+              title='Register'
               category='action'
               variant='contained'
               isFullWidth={true}
-              onClick={signUpSubmit}
+              onClick={registrationSubmit}
               disabled={disabled}
               loading={loading}
             />
           </Box>
         </form>
-        <Box textAlign={"center"} mt={2} mb={2}>
-          <Typography
-            variant='subtitle1'
-            align='center'
-            display='inline'
-            paddingX={1}
-            gutterBottom
-          >
-            Already have an account?
-          </Typography>
-          
-          <Link className={styles['link']} to='/login'>
-            <Typography>Log in</Typography>
-          </Link>
-          
-        </Box>
       </Box>
       <Snackbar 
         open={open}

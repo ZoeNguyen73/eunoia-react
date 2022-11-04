@@ -13,17 +13,17 @@ export default function CharitiesIndexGrid() {
         const charitiesResp = await axios.get(apiUrl)
         setCharities(charitiesResp.data);
       } catch (err) {}
-    }
+    };
 
-    getData()
+    getData();
     
-  }, [])
+  }, []);
 
   const charitiesList = charities.map((c, idx) => {
     return (
       <div key={idx}>{c.name}</div>
     )
-  })
+  });
 
   return (
     <div>

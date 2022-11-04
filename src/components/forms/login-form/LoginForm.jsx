@@ -53,11 +53,11 @@ export default function LoginForm() {
       setCookie('refreshToken', refresh);
       setCookie('accessToken', access);
       const decoded = jwt_decode(access);
-      const username = decoded.username;
-      const organization = decoded.organization;
+      const {username, organization, organization_slug} = decoded;
       setCookie('username', username);
       setCookie('organization', organization);
-      setAuth({ accessToken: access, username, organization });
+      setCookie('organization_slug', organization_slug);
+      setAuth({ accessToken: access, username, organization, organizationSlug: organization_slug });
 
       navigate('/');
 

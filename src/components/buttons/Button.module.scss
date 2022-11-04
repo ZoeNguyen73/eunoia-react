@@ -5,6 +5,7 @@
   -webkit-transition: all .5s;
   -moz-transition: all .5s;
   transition: all .5s;
+  white-space: nowrap;
 
   &:hover {
     transform: scale(1.1, 1.1);
