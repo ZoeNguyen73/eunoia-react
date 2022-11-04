@@ -59,6 +59,21 @@ export default function ListingGrid(props) {
     }
 
     getData();
+  }, [])
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const response = await axios.get(apiUrl);
+        setListings(response.data);
+        return
+      } catch(err) {
+        console.log(err);
+        return
+      }
+    }
+
+    getData();
   }, [apiUrl, props])
 
   const handleAddToCart = (listingId) => {

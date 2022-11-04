@@ -49,16 +49,17 @@ export default function ListingPage() {
     <>
       <Grid 
         container
-        spacing={4}
+        spacing={3}
         columns={{ xs: 1, md: 12 }}
         justifyContent="space-between"
         marginTop={4}
       >
         <Grid md={2} item>
           <Typography variant='h6' component='h2' color='var(-color2)'>
-            Filters
+            Categories
           </Typography>
           <Typography
+            sx={{':hover': {cursor: 'pointer'}}}
             variant='caption' 
             onClick={clearFilters}
           >
@@ -70,15 +71,15 @@ export default function ListingPage() {
 
         <Grid md={10} sx={{ height: "100%" }} paddingTop={0}>
           <Typography
-            variant="h4"
+            variant='h3'
             component='h1'
-            textAlign={"center"}
+            textAlign={'center'}
             marginY={4}
-            sx={{ color: "var(--color4)", fontWeight: "bold" }}
+            sx={{ color: 'var(--color4)', fontWeight: 'bold' }}
           >
             Listings
           </Typography>
-          <ListingGrid filters={{categories: categoriesFilter}} />
+          <ListingGrid filters={{category: categoriesFilter}} />
         </Grid>
       </Grid> 
     </>
