@@ -186,6 +186,8 @@ export default function OrganizationRegisterForm() {
           <TextField
             label='Description (max 200 characters)'
             color='secondary'
+            multiline
+            maxRows={4}
             required
             fullWidth
             variant='outlined'

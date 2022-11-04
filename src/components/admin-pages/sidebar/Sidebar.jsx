@@ -15,21 +15,20 @@ import CategoryIcon from '@mui/icons-material/Category';
 import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import HomeIcon from '@mui/icons-material/Home';
+import Chip from '@mui/material/Chip';
+import Divider from '@mui/material/Divider';
 
 import AuthContext from '../../../context/AuthProvider';
 import CustomAvatar from '../../images/Avatar';
-import axios from '../../../api/axios';
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import styles from './Sidebar.module.scss';
 
 const sidebarWidth = 240;
 
 export default function Sidebar(props) {
   const { auth } = useContext(AuthContext);
-  const [organization, setOrganization] = useState(null);
+  const organization = props.organizationData;
   const [actions, setActions] = useState([]);
-  const axiosPrivate = useAxiosPrivate();
-  const handleTabChange = props.handleTabChange;
+  const {handleTabChange} = props;
 
   const actionListsDonor = [
     { text: 'Info', icon: <InfoIcon color='primary'/>, tabValue: '1',},
@@ -48,26 +47,15 @@ export default function Sidebar(props) {
   ]
 
   useEffect(() => {
-    async function getOrgData() {
-      
-      try {
-        if (auth?.organization && auth?.organization !== 'null') {
-          const response = await axios.get(`organizations/${auth?.organizationSlug}/`);
-          if (response.data.organization_type === 'Donor') {
-            setActions(actionListsDonor);
-          };
-          if (response.data.organization_type === 'Charity') {
-            setActions(actionListsCharity);
-          };
-          setOrganization(response.data);
-        };
-      } catch (err) {
-        console.log(`err getting org data: ${err}`);
-      };
-    }
 
-    getOrgData();
-  },[]);
+    if (organization?.organization_type === 'Donor') {
+      setActions(actionListsDonor);
+    };
+    if (organization?.organization_type === 'Charity') {
+      setActions(actionListsCharity);
+    };
+    return
+  },[props]);
 
   if (!auth?.organization || auth?.organization === 'null') {
     return (
@@ -88,21 +76,29 @@ export default function Sidebar(props) {
       >
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
-          <Box display='flex' flexDirection='row' alignItems='center' >
+          <Box display='flex' flexDirection='row' alignItems='center' marginTop='2em' >
           <CustomAvatar 
             imgUrl={organization?.logo_url}
             imgAlt={organization?.name}
             sx={{
               width: 40,
               height: 40,
-              margin: 2,
+              margin: 1,
             }}
           />
+          
           <Typography variant='h6' component='h1' sx={{fontWeight: 'bold', color: 'var(--color4)'}}>
             {organization?.name}
             </Typography>
           </Box>
-          
+          <Chip 
+            label={organization?.status} 
+            size='small'
+            color={organization?.status === 'active' ? 'success' : 'default'}
+            variant='outlined'
+            sx={{ marginBottom: '1em' }}
+          />
+          <Divider />
           <List>
             {actions.map((action, idx) => (
               <ListItem key={idx} disablePadding onClick={() => handleTabChange(action.tabValue)}>
