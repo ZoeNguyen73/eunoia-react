@@ -13,6 +13,7 @@ import Activation from './components/activation/Activation';
 import RequestActivationEmail from './components/activation/RequestActivationEmail';
 import OrganizationRegisterForm from './components/forms/organizations-form/OrganizationRegisterForm';
 import AdminPageLayout from './components/admin-pages/page-layout/AdminPageLayout';
+import ListingPage from './components/listings/ListingPage';
 
 import './index.css';
 import App from './App';
@@ -40,6 +41,7 @@ root.render(
           <BrowserRouter>
             <Routes>
               <Route path='/' element={<App />}>
+                <Route path='listings' element={<ListingPage />} />
                 <Route path='register' element={<SignUpForm />} />
                 <Route path='login' element={<LoginForm />} />
                 <Route path='logout' element={<LogOut />} />
