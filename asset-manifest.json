@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/eunoia-react/static/css/main.f7cb68ec.css",
-    "main.js": "/eunoia-react/static/js/main.3fe312a6.js",
+    "main.css": "/eunoia-react/static/css/main.eec97845.css",
+    "main.js": "/eunoia-react/static/js/main.f73103c6.js",
     "index.html": "/eunoia-react/index.html",
-    "main.f7cb68ec.css.map": "/eunoia-react/static/css/main.f7cb68ec.css.map",
-    "main.3fe312a6.js.map": "/eunoia-react/static/js/main.3fe312a6.js.map"
+    "main.eec97845.css.map": "/eunoia-react/static/css/main.eec97845.css.map",
+    "main.f73103c6.js.map": "/eunoia-react/static/js/main.f73103c6.js.map"
   },
   "entrypoints": [
-    "static/css/main.f7cb68ec.css",
-    "static/js/main.3fe312a6.js"
+    "static/css/main.eec97845.css",
+    "static/js/main.f73103c6.js"
   ]
 }
