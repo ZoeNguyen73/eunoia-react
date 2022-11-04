@@ -1,5 +1,4 @@
 import { useRef, useState, useContext} from 'react';
-import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 import TextField from '@mui/material/TextField';
@@ -17,7 +16,7 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import styles from '../Form.module.scss';
 import CustomLoadingButton from '../../buttons/LoadingButton';
 import CustomButton from '../../buttons/Button';
-import PreviewImage from '../../images/preview-image/PreviewImage';
+import PreviewImage from '../../images/PreviewImage';
 
 export default function OrganizationRegisterForm() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -260,6 +259,7 @@ export default function OrganizationRegisterForm() {
             { fileUrl && (
               <PreviewImage 
                 imgUrl={fileUrl}
+                imgAlt='organization-logo'
                 sx={{
                   width: 128,
                   height: 128,

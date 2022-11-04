@@ -66,7 +66,7 @@ export default function MenuBar(props) {
         {(auth?.organization && auth?.organization !== 'null') && (
           <MenuItem
             onClick={handleCloseUserMenu}
-            to='organizations/dashboard'
+            to='admin'
             component={Link}
           >
             <Typography textAlign='center'>Dashboard</Typography>

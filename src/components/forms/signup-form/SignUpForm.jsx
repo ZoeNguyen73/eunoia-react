@@ -13,7 +13,7 @@ import axios from '../../../api/axios';
 import styles from '../Form.module.scss';
 import CustomLoadingButton from '../../buttons/LoadingButton';
 import CustomButton from '../../buttons/Button';
-import PreviewImage from '../../images/preview-image/PreviewImage';
+import CustomAvatar from '../../images/Avatar';
 
 export default function SignUpForm() {
   const { auth } = useContext(AuthContext);
@@ -200,7 +200,7 @@ export default function SignUpForm() {
             </Box>
             
             { fileUrl && (
-              <PreviewImage 
+              <CustomAvatar
                 imgUrl={fileUrl}
                 sx={{
                   width: 128,
