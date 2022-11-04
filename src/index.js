@@ -12,6 +12,7 @@ import SignUpForm from './components/forms/signup-form/SignUpForm';
 import Activation from './components/activation/Activation';
 import RequestActivationEmail from './components/activation/RequestActivationEmail';
 import OrganizationRegisterForm from './components/forms/organizations-form/OrganizationRegisterForm';
+import AdminPageLayout from './components/admin-pages/page-layout/AdminPageLayout';
 
 import './index.css';
 import App from './App';
@@ -43,6 +44,7 @@ root.render(
                 <Route path='login' element={<LoginForm />} />
                 <Route path='logout' element={<LogOut />} />
                 <Route path='charities' element={<CharitiesIndexGrid />} />
+                <Route path='admin' element={<AdminPageLayout />} />
                 <Route
                   path='users/activate/:activationToken'
                   element={<Activation />}
