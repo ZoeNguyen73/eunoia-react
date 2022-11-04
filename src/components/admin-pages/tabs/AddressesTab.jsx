@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -23,7 +22,6 @@ import CustomButton from '../../buttons/Button';
 export default function AddressesTab(props) {
   const organization = props.organizationData;
   const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
   const [button, setButton] = useState('Add');
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
@@ -203,6 +201,34 @@ export default function AddressesTab(props) {
     }
   }
 
+  const handleDelete = async () => {
+    setLoading(true);
+    setDisabled(true);
+    try {
+      await axiosPrivate.delete(
+        `organizations/${organization.slug}/addresses/${editAddress.id}`
+      )
+      setOpen(true);
+      setMessage('Successfully deleted address');
+      setSeverity('success');
+      setLoading(false);
+      setDisabled(false);
+      setFormType('');
+      setButton('Add');
+      const response = await axios.get(`organizations/${organization.slug}/addresses`);
+      setAddresses(response.data);
+      return
+
+    } catch(err) {
+      setOpen(true);
+      setMessage(err?.response?.data?.detail);
+      setSeverity('error');
+      setLoading(false);
+      setDisabled(false);
+      return
+    }
+  }
+
   const handleCancel = () => {
     setFormType('');
     setButton('Add');
@@ -224,6 +250,16 @@ export default function AddressesTab(props) {
                   category='action'
                   variant='outlined'
                   onClick={handleCancel}
+                />
+              )}
+              { formType === 'edit' && (
+                <CustomLoadingButton
+                  loading={loading}
+                  disabled={disabled} 
+                  title='Delete'
+                  category='action'
+                  variant='outlined'
+                  onClick={handleDelete}
                 />
               )}
               <CustomLoadingButton
