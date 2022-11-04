@@ -14,6 +14,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import CategoryIcon from '@mui/icons-material/Category';
 import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import HomeIcon from '@mui/icons-material/Home';
 
 import AuthContext from '../../../context/AuthProvider';
 import CustomAvatar from '../../images/Avatar';
@@ -26,14 +27,24 @@ const sidebarWidth = 240;
 export default function Sidebar(props) {
   const { auth } = useContext(AuthContext);
   const [organization, setOrganization] = useState(null);
+  const [actions, setActions] = useState([]);
   const axiosPrivate = useAxiosPrivate();
+  const handleTabChange = props.handleTabChange;
 
   const actionListsDonor = [
-    { text: 'Info', icon: <InfoIcon color='primary'/>,},
-    { text: 'Users', icon: <GroupIcon color='primary'/>,},
-    { text: 'Items', icon: <CategoryIcon color='primary'/>,},
-    { text: 'Listings', icon: <LoyaltyIcon color='primary'/>,},
-    { text: 'Orders', icon: <LocalShippingIcon color='primary'/>,},
+    { text: 'Info', icon: <InfoIcon color='primary'/>, tabValue: '1',},
+    { text: 'Addresses', icon: <HomeIcon color='primary'/>, tabValue: '2',},
+    { text: 'Users', icon: <GroupIcon color='primary'/>, tabValue: '3',},
+    { text: 'Items', icon: <CategoryIcon color='primary'/>, tabValue: '5',},
+    { text: 'Listings', icon: <LoyaltyIcon color='primary'/>, tabValue: '6',},
+    { text: 'Orders', icon: <LocalShippingIcon color='primary'/>, tabValue: '4',},
+  ]
+
+  const actionListsCharity = [
+    { text: 'Info', icon: <InfoIcon color='primary'/>, tabValue: '1',},
+    { text: 'Addresses', icon: <HomeIcon color='primary'/>, tabValue: '2',},
+    { text: 'Users', icon: <GroupIcon color='primary'/>, tabValue: '3',},
+    { text: 'Orders', icon: <LocalShippingIcon color='primary'/>, tabValue: '4',},
   ]
 
   useEffect(() => {
@@ -42,6 +53,12 @@ export default function Sidebar(props) {
       try {
         if (auth?.organization && auth?.organization !== 'null') {
           const response = await axios.get(`organizations/${auth?.organizationSlug}/`);
+          if (response.data.organization_type === 'Donor') {
+            setActions(actionListsDonor);
+          };
+          if (response.data.organization_type === 'Charity') {
+            setActions(actionListsCharity);
+          };
           setOrganization(response.data);
         };
       } catch (err) {
@@ -87,8 +104,8 @@ export default function Sidebar(props) {
           </Box>
           
           <List>
-            {actionListsDonor.map((action, idx) => (
-              <ListItem key={idx} disablePadding onClick={() => console.log(`tab change: ${action.text}`)}>
+            {actions.map((action, idx) => (
+              <ListItem key={idx} disablePadding onClick={() => handleTabChange(action.tabValue)}>
                 <ListItemButton>
                   <ListItemIcon>
                     {action.icon}
