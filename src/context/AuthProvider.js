@@ -9,6 +9,7 @@ export const AuthProvider= ({ children }) => {
   const [auth, setAuth] = useState({
     username: cookies.username || '',
     organization: cookies.organization || '',
+    organizationSlug: cookies.organization_slug || '',
     accessToken: cookies.accessToken || '',
   });
 
