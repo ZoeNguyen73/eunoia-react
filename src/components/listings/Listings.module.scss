@@ -1,0 +1,68 @@
+.listing-card {
+  background-color: var(--color3a);
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  box-shadow: none;
+
+  .listing-card-brand {
+    font-weight: 800;
+    text-align: left;
+  }
+  
+  .listing-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+    margin-top: 0.5em;
+    padding: 0.5em;
+  }
+
+  .listing-card-content {
+    margin: 1em;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 0.5em;
+    gap: 0.3em;
+    flex-grow: 1;
+  }
+
+  .listing-card-image {
+    height: 300px;
+  }
+
+  .listing-card-title {
+    color: var(--color2);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0;
+    text-align: left;
+    height: 2em;
+  }
+
+  .listing-card-description {
+    color: var(--color2);
+    overflow: hidden;
+    margin: 0.5em 0;
+    text-align: left;
+    height: 3em;
+  }
+
+  .listing-card-category {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.3em;
+    overflow: hidden;
+  }
+
+  .listing-card-caption {
+    text-align: left;
+
+    .title {
+      font-weight: 900;
+    }
+  }
+}
