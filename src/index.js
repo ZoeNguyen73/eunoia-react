@@ -16,6 +16,8 @@ import OrganizationRegisterForm from './components/forms/organizations-form/Orga
 import AdminPageLayout from './components/admin-pages/page-layout/AdminPageLayout';
 import ListingPage from './components/listings/ListingPage';
 import Cart from './components/cart/Cart';
+import Typography from '@mui/material/Typography';
+import Homepage from './components/homepage/Homepage';
 
 import './index.css';
 import App from './App';
@@ -60,11 +62,12 @@ root.render(
                     element={<RequestActivationEmail />}
                   />
                   <Route path='organizations/register' element={<OrganizationRegisterForm />} />
+                  <Route path='' element={<Homepage />} />
                   <Route
                     path='*'
                     element={
                       <main style={{ padding: '1rem' }}>
-                        <p style={{ color: 'white' }}>There's nothing here!</p>
+                        <Typography variant='h4' color='var(--color2)'>There's nothing here!</Typography>
                       </main>
                     }
                   />

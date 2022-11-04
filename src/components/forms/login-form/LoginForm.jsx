@@ -85,8 +85,8 @@ export default function LoginForm() {
         </span>
       </Typography>
       <Box textAlign={"center"}>
-        <Button variant='contained' href='/'>Go back to homepage</Button>
-        <Button>Go to dashboard</Button>
+        <Button variant='contained' href='/' sx={{marginRight:'2em'}}>Go back to homepage</Button>
+        <Button variant='contained' href='/admin'>Go to dashboard</Button>
       </Box>
     </Box>
   )}
