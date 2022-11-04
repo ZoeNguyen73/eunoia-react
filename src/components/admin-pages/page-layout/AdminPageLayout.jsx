@@ -10,48 +10,79 @@ import OrdersTab from '../tabs/OrdersTab';
 import ItemsTab from '../tabs/ItemsTab';
 import ListingsTab from '../tabs/ListingsTab';
 
+import axios from '../../../api/axios';
+
 export default function PageLayout() {
   const { auth } = useContext(AuthContext);
   const [tab, setTab] = useState(null);
+  const [organization, setOrganization] = useState(null);
   const [tabValue, setTabValue] = useState(null);
 
   useEffect(() => {
-    if (auth?.organization) {
-      setTabValue('1');
-      setTab(<InfoTab />);
-      return;
+    async function getOrgData() {
+      try {
+        if (auth?.organization && auth?.organization !== 'null') {
+          const response = await axios.get(`organizations/${auth?.organizationSlug}/`);
+          setOrganization(response.data);
+          setTabValue('1');
+          setTab(<InfoTab organizationData={response.data} handleOrganizationUpdate={handleOrganizationUpdate}/>);
+          return;
+        };
+      } catch (err) {
+        console.log(`err getting org data: ${err}`);
+      };
     }
+
+    getOrgData();
   }, []);
 
   const handleTabChange = (newTabValue) => {
     setTab(newTabValue);
     switch(newTabValue) {
       case '1':
-        setTab(<InfoTab />);
+        setTab(<InfoTab organizationData={organization} handleOrganizationUpdate={handleOrganizationUpdate} />);
         break;
       case '2':
-        setTab(<AddressesTab />);
+        setTab(<AddressesTab organizationData={organization}/>);
         break;
       case '3':
-        setTab(<UsersTab />);
+        setTab(<UsersTab organizationData={organization}/>);
         break;
       case '4':
-        setTab(<OrdersTab />);
+        setTab(<OrdersTab organizationData={organization}/>);
         break;
       case '5':
-        setTab(<ItemsTab />);
+        setTab(<ItemsTab organizationData={organization}/>);
         break;
       case '6':
-      setTab(<ListingsTab />);
+      setTab(<ListingsTab organizationData={organization}/>);
       break;
       default:
-        setTab(<InfoTab />);
+        setTab(<InfoTab organizationData={organization} handleOrganizationUpdate={handleOrganizationUpdate} />);
     };
   }
 
+  const handleOrganizationUpdate = async () => {
+    async function getOrgData() {
+      try {
+        if (auth?.organization && auth?.organization !== 'null') {
+          const response = await axios.get(`organizations/${auth?.organizationSlug}/`);
+          setOrganization(response.data);
+          setTabValue('1');
+          setTab(<InfoTab organizationData={response.data} />);
+          return;
+        };
+      } catch (err) {
+        console.log(`err getting org data: ${err}`);
+      };
+    }
+
+    getOrgData();
+  }
+
   return (
-    <Box>
-      <Sidebar handleTabChange={handleTabChange}/>
+    <Box display='flex'>
+      <Sidebar handleTabChange={handleTabChange} organizationData={organization}/>
       {tab}
     </Box>
   )
