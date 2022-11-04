@@ -39,6 +39,35 @@ export default function AddressesTab(props) {
     getAddressesData();
   }, [])
 
+  const handleSetDefault = async (addressId) => {
+    setLoading(true);
+    setDisabled(true);
+    try {
+      await axiosPrivate.patch(
+        `organizations/${organization.slug}/addresses/${addressId}/default/`
+      )
+      async function getAddressesData() {
+        const response = await axios.get(`organizations/${organization.slug}/addresses`);
+        setAddresses(response.data);
+        return
+      }
+  
+      getAddressesData();
+      setSeverity('success');
+      setOpen(true);
+      setMessage('Successfully changed default address');
+      setLoading(false);
+      setDisabled(false);
+    } catch(err) {
+      setOpen(true);
+      setMessage(err?.response?.data?.detail);
+      setSeverity('error');
+      setLoading(false);
+      setDisabled(false);
+      return
+    }
+  }
+
   return (
     <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
       <Box>
@@ -92,11 +121,14 @@ export default function AddressesTab(props) {
                         />
                       )}
                       {!address.is_default && (
-                        <CustomButton 
+                        <CustomLoadingButton 
                           title='Set as default'
                           category='action'
                           variant='outlined'
                           size='small'
+                          onClick={() => handleSetDefault(address.id)}
+                          loading={loading}
+                          disabled={disabled}
                         />
                       )}
                     </Box>
@@ -107,6 +139,19 @@ export default function AddressesTab(props) {
           </Table>
         </TableContainer>
       </Box>
+      <Snackbar 
+        open={open}
+        autoHideDuration={3000}
+        onClose={((evnt, reason) => {
+          if (reason === 'timeout') {
+            setOpen(false);
+          }
+        })}
+      >
+        <Alert variant='filled' severity={severity} sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
     </Box>
   )
 }
