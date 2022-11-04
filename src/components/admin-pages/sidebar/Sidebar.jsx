@@ -89,15 +89,25 @@ export default function Sidebar(props) {
           
           <Typography variant='h6' component='h1' sx={{fontWeight: 'bold', color: 'var(--color4)'}}>
             {organization?.name}
-            </Typography>
+          </Typography>
           </Box>
-          <Chip 
-            label={organization?.status} 
-            size='small'
-            color={organization?.status === 'active' ? 'success' : 'default'}
-            variant='outlined'
-            sx={{ marginBottom: '1em' }}
-          />
+          <Box marginLeft='1em' textAlign='left'>
+            <Chip 
+              label={organization?.status} 
+              size='small'
+              color={organization?.status === 'active' ? 'success' : 'default'}
+              variant='outlined'
+              sx={{ marginBottom: '1em' }}
+            />
+            <Chip 
+              label={organization?.organization_type} 
+              size='small'
+              color='default'
+              variant='outlined'
+              sx={{ marginBottom: '1em', marginLeft: '0.5em' }}
+            />
+          </Box>
+          
           <Divider />
           <List>
             {actions.map((action, idx) => (

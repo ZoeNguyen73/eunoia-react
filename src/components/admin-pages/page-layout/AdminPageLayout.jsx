@@ -25,7 +25,7 @@ export default function PageLayout() {
           const response = await axios.get(`organizations/${auth?.organizationSlug}/`);
           setOrganization(response.data);
           setTabValue('1');
-          setTab(<InfoTab organizationData={response.data} />);
+          setTab(<InfoTab organizationData={response.data} handleOrganizationUpdate={handleOrganizationUpdate}/>);
           return;
         };
       } catch (err) {
@@ -40,7 +40,7 @@ export default function PageLayout() {
     setTab(newTabValue);
     switch(newTabValue) {
       case '1':
-        setTab(<InfoTab organizationData={organization}/>);
+        setTab(<InfoTab organizationData={organization} handleOrganizationUpdate={handleOrganizationUpdate} />);
         break;
       case '2':
         setTab(<AddressesTab organizationData={organization}/>);
@@ -58,8 +58,26 @@ export default function PageLayout() {
       setTab(<ListingsTab organizationData={organization}/>);
       break;
       default:
-        setTab(<InfoTab organizationData={organization}/>);
+        setTab(<InfoTab organizationData={organization} handleOrganizationUpdate={handleOrganizationUpdate} />);
     };
+  }
+
+  const handleOrganizationUpdate = async () => {
+    async function getOrgData() {
+      try {
+        if (auth?.organization && auth?.organization !== 'null') {
+          const response = await axios.get(`organizations/${auth?.organizationSlug}/`);
+          setOrganization(response.data);
+          setTabValue('1');
+          setTab(<InfoTab organizationData={response.data} />);
+          return;
+        };
+      } catch (err) {
+        console.log(`err getting org data: ${err}`);
+      };
+    }
+
+    getOrgData();
   }
 
   return (
