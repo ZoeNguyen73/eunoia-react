@@ -15,6 +15,7 @@ export default function CustomButton(props) {
     onMouseOver,
     onMouseLeave,
     upload = false,
+    size = 'medium',
     onChange,
   } = props;
 
@@ -23,13 +24,14 @@ export default function CustomButton(props) {
       className={styles[`${category}`]}
       sx={{ fontWeight: 'bold', textTransform: 'none' }}
       variant={variant}
-      component={upload ? 'label' : RouterLink}
+      component={upload ? 'label' : ''}
       to={route}
       onClick={onClick}
       fullWidth={isFullWidth}
       disabled={disabled}
       onMouseOver={onMouseOver}
       onMouseLeave={onMouseLeave}
+      size={size}
     >
       {title}
       {upload && (

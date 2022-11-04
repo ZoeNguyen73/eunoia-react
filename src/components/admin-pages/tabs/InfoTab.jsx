@@ -100,6 +100,12 @@ export default function InfoTab(props) {
       return
     }
   }
+
+  const handleCancel = () => {
+    setIsEditForm(false);
+    setButton('Edit');
+    return
+  }
   
   return (
     <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
@@ -107,14 +113,24 @@ export default function InfoTab(props) {
         <Typography variant='h4' component='h1' color='var(--color4)' fontWeight='800'>
           {organization?.name}
         </Typography>
-        <CustomLoadingButton
-          loading={loading} 
-          title={button}
-          category='action'
-          variant='contained'
-          onClick={button === 'Edit' ? handleEditClick : handleEditSubmit}
-          disabled={disabled}
-        />
+        <Box display='flex' gap='0.5em'>
+          { isEditForm && (
+            <CustomButton 
+              title='Cancel'
+              category='action'
+              variant='outlined'
+              onClick={handleCancel}
+            />
+          )}
+          <CustomLoadingButton
+            loading={loading} 
+            title={button}
+            category='action'
+            variant='contained'
+            onClick={button === 'Edit' ? handleEditClick : handleEditSubmit}
+            disabled={disabled}
+          />
+        </Box>
       </Box>
       
       <Divider variant='middle' sx={{marginTop: '1em', marginBottom: '1em', marginLeft: '0', marginRight: '0'}}/>
@@ -170,7 +186,7 @@ export default function InfoTab(props) {
           </Box>
           <Box marginBottom='1em' textAlign='left'>
             <Typography variant='body1' component='h2' color='var(--color2)' fontWeight='800'>
-              Website: {organization?.website}
+              Website:
             </Typography>
             <TextField 
               fullWidth
@@ -217,7 +233,7 @@ export default function InfoTab(props) {
           </Box>
           <Box marginBottom='1em' textAlign='left'>
             <Typography variant='body1' component='h2' color='var(--color2)' fontWeight='800'>
-              Website: {organization?.website}
+              Website:
             </Typography>
             <TextField fullWidth id='outlined-basic' variant='outlined' disabled value={organization?.website}/>
           </Box>
