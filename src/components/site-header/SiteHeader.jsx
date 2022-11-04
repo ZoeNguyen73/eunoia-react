@@ -13,25 +13,32 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Badge from '@mui/material/Badge';
 
 import AuthContext from '../../context/AuthProvider';
 import axios from '../../api/axios';
 import SearchBar from './SearchBar'
 import DrawerComponent from './DrawerComponent';
 import MenuBar from './MenuBar';
-import styles from './SiteHeader.module.scss'
+import styles from './SiteHeader.module.scss';
+import CartContext from '../../context/CartProvider';
 
 export default function SiteHeader() {
   const { auth } = useContext(AuthContext);
+  const { cart } = useContext(CartContext);
   const isAuth = !!auth?.username
   const [profile, setProfile] = useState(null);
+  const [orgType, setOrgType] = useState('');
 
   useEffect(() => {
     async function getProfileData() {
       if (auth?.username) {
         try {
           const response = await axios.get(`/users/${auth?.username}`);
+          const orgResp = await axios.get(`organizations/${auth.organizationSlug}/`)
           setProfile(response.data);
+          setOrgType(orgResp.data.organization_type);
         } catch (err) {
           console.log(`err getting profile data: ${err}`);
         }
@@ -44,20 +51,19 @@ export default function SiteHeader() {
 
   const navigationLinks = {
     listings: { pageName: 'Listings', pageLink: '/listings'},
-    charities: { pageName: 'Charities', pageLink: '/charities' },
-    donors: { pageName: 'Donors', pageLink: '/donors' },
-    about: { pageName: 'About', pageLink: '/about' },
+    // charities: { pageName: 'Charities', pageLink: '/charities' },
+    // donors: { pageName: 'Donors', pageLink: '/donors' },
     login: { pageName: 'Login', pageLink: '/login' },
     register: { pageName: 'Register', pageLink: '/register' },
     profile: { pageName: 'Profile', pageLink: `/users/${auth?.username}` },
     logout: { pageName: 'Log Out', pageLink: '/logout' },
   }
 
-  const { listings, charities, donors, about, login, register } = navigationLinks
+  const { listings, login, register } = navigationLinks
 
   const navigationTabs = isAuth
-    ? [ listings, charities, donors, about ]
-    : [ listings, charities, donors, about, login, register ];
+    ? [ listings, ]
+    : [ listings, login, register ];
   
   const theme = useTheme();
   const isBreakPoint = useMediaQuery(theme.breakpoints.down('md'));
@@ -79,7 +85,7 @@ export default function SiteHeader() {
                 alignItems: 'center',
               }}
             >
-              <SearchBar />
+              {/* <SearchBar /> */}
               <DrawerComponent isAuth={isAuth} navigationLinks={navigationLinks} />
             </Box>
           </Grid>
@@ -98,7 +104,7 @@ export default function SiteHeader() {
                   alignItems: 'center',
                 }}
               >
-                <SearchBar />
+                {/* <SearchBar /> */}
                 <List sx={{display: 'flex', marginLeft: 'auto'}}>
                   {navigationTabs.map((nav, index) => (
                     <ListItemButton 
@@ -127,6 +133,16 @@ export default function SiteHeader() {
                 </List>
               </Box>
             </Grid>
+
+            {(isAuth && orgType === 'Charity') && (
+              <Box marginRight='2em'>
+                <Badge badgeContent={cart} color='secondary'>
+                  <Link to='/cart'>
+                    <ShoppingCartIcon color='action' />
+                  </Link>
+                </Badge>
+              </Box>
+            )}
 
             {isAuth && (
               <Box
