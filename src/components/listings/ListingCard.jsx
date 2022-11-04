@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -6,9 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Unstable_Grid2";
 
-import axios from '../../api/axios';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import AuthContext from '../../context/AuthProvider';
 import CustomButton from "../buttons/Button";

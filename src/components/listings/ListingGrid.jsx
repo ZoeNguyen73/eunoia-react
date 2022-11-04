@@ -6,6 +6,7 @@ import ListingCard from "./ListingCard";
 import axios from '../../api/axios';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import AuthContext from '../../context/AuthProvider';
+import CartContext from '../../context/CartProvider';
 
 export default function ListingGrid(props) {
   const [listings, setListings] = useState([]);
@@ -13,6 +14,7 @@ export default function ListingGrid(props) {
   const [cartListings, setCartListings] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useContext(AuthContext);
+  const { cart, setCart } = useContext(CartContext);
   const { filters, limit } = props;
 
   let filterParams = '?';
@@ -51,6 +53,7 @@ export default function ListingGrid(props) {
         setListings(response.data);
         setOrgType(orgResponse.data.organization_type);
         setCartListings(cartListingsResp.data.map(i => i.listing.id));
+        setCart(cartListingsResp.data.length);
         return
       } catch(err) {
         console.log(err);
@@ -78,11 +81,13 @@ export default function ListingGrid(props) {
 
   const handleAddToCart = (listingId) => {
     setCartListings(prev => { return [...prev, listingId]});
+    setCart(prev => prev+1);
     return
   }
 
   const handleRemoveFromCart = (listingId) => {
     setCartListings(prev => { return prev.filter(a => a !== listingId)});
+    setCart(prev => prev-1);
     return
   }
 
