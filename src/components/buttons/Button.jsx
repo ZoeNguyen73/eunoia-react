@@ -32,8 +32,6 @@ export default function CustomButton(props) {
       onMouseOver={onMouseOver}
       onMouseLeave={onMouseLeave}
       size={size}
-      whiteSpace='nowrap'
-      minWidth='auto'
     >
       {title}
       {upload && (
