@@ -18,7 +18,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import axios from '../../../api/axios';
 import CustomLoadingButton from '../../buttons/LoadingButton';
-import CustomButton from '../../buttons/Button';
 import CustomAvatar from '../../images/Avatar';
 
 export default function UsersTab(props) {
