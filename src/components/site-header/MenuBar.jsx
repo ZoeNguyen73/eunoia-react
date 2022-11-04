@@ -69,7 +69,7 @@ export default function MenuBar(props) {
             to='admin'
             component={Link}
           >
-            <Typography textAlign='center'>Dashboard</Typography>
+            <Typography textAlign='center'>Admin</Typography>
           </MenuItem>
         )}
       </Menu>
