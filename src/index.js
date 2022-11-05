@@ -63,6 +63,7 @@ root.render(
                   />
                   <Route path='organizations/register' element={<OrganizationRegisterForm />} />
                   <Route path='' element={<Homepage />} />
+                  <Route path='eunoia-react' element={<Homepage />} />
                   <Route
                     path='*'
                     element={

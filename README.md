@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+# Eunoia
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About **Eunoia**
 
-## Available Scripts
+### Project description
+A platform to connect potential donor and charity organizations and faciliate sharing of excess food and resources, in order to reduce food wastage. Target audiences of this app are businesses such as supermarkets and restaurants, who typically have higher volume of food waste.
 
-In the project directory, you can run:
+### Key functionalities
+* Donors can create listings of their excess food / resources, including collection address and time
+* Charity organizations can browse and claim listings which they need
+* Each organization can have multiple admins, allowing businesses with multiple outlets to easily manage listings and orders in different locations
 
-### `npm start`
+### Link
+[https://zoenguyen73.github.io/eunoia-react/](https://zoenguyen73.github.io/eunoia-react/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Technologies
+* HTML
+* CSS
+* Javascript
+* React
+* Python
+* Django Rest Framework
+* Postgresql
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+### Additional features for future development
+* Search
+* Super Admin dashboard
+* Notifications
+* Delivery & Order fulfillment
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## About my process
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Challenges
+* Learning how to use Django Rest Framework was definitely the biggest challenge that I had. Things become a lot less apparent as I utilise in-built functions and views, which in turn makes a steep learning curving and lengthens bug-fixing process significantly
+* Some of the logic that I planned for turned out to be too complicated to implement in Front-End, especially given shortage of time. I had to forgo a few features, such as: allowing multiple timeslots selection per listing, letting donors select recipients, etc
